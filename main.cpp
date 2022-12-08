@@ -318,28 +318,6 @@ void TeclasEspeciais(int key, int x, int y)
 	glutPostRedisplay();
 }
 
-// Fun��o callback chamada quando s�o notificados os eventos do mouse
-void GerenciaMouse(int button, int state, int x, int y)
-{
-	if (button == GLUT_LEFT_BUTTON)
-		if (state == GLUT_DOWN) {  // zoom in
-			if (angle >= 10) angle -= 5;
-		}
-	if (button == GLUT_RIGHT_BUTTON)
-		if (state == GLUT_DOWN) {  // zoom out
-			if (angle <= 130) angle += 5;
-		}
-	EspecificaParametrosVisualizacao();
-	glutPostRedisplay();
-}
-
-// Fun��o callback chamada para gerenciar eventos de teclas
-void Teclado (unsigned char key, int x, int y)
-{
-	if (key == 27)
-		exit(0);
-}
-
 void Anima(int value)
 {
 
@@ -370,6 +348,54 @@ void Anima(int value)
 	glutPostRedisplay();
     if(animate) glutTimerFunc(10,Anima, 1);
 }
+
+// Fun��o callback chamada quando s�o notificados os eventos do mouse
+void GerenciaMouse(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON)
+		if (state == GLUT_DOWN) {  // zoom in
+			if (angle >= 10) angle -= 5;
+		}
+	if (button == GLUT_RIGHT_BUTTON)
+		if (state == GLUT_DOWN) {  // zoom out
+			if (angle <= 130) angle += 5;
+		}
+	EspecificaParametrosVisualizacao();
+	glutPostRedisplay();
+}
+
+// Fun��o callback chamada para gerenciar eventos de teclas
+void Teclado (unsigned char key, int x, int y)
+{
+	 /*
+    * Controle de visualizacao dos Planetas
+    * Para as teclas alfa-numericas de 1 a 8
+    */
+    show[key - 49] = !show[key - 49];
+
+    /*
+    * Controle de visualizacao das Orbitas
+    * Para as teclas `o' ou `O'
+    */
+    if(key == 79 || key == 111){
+        showOrbita = ! showOrbita;
+    }
+
+    /*
+    * Controle de animacao do sistema solar
+    * Para as teclas `p' ou `P'
+    */
+    if(key == 80 || key == 112){
+        animate = !animate;
+        if(animate){
+            glutTimerFunc(100,Anima, 1);
+        }
+
+    }
+
+    glutPostRedisplay();
+}
+
 
 // Fun��o respons�vel por inicializar par�metros e vari�veis
 void Inicializa (void)
