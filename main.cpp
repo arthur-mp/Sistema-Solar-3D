@@ -27,6 +27,7 @@
 
 GLfloat angle, fAspect;
 GLfloat deslocamentoX, deslocamentoY, deslocamentoZ;
+GLfloat lookx, looky, deslocamentoZZ;
 GLfloat angleRotate = 0;
 
 static int slices = 20;
@@ -115,8 +116,8 @@ void DesenhaOrbita(float raio)
     // Desenha um círculo de linhas
      glBegin(GL_LINES);
      for(angulo=0; angulo<2*M_PI; angulo+=incremento){
-        glVertex2f(raioMaior*raio*cos(angulo),raioMenor*raio*sin(angulo));
-        glVertex2d(raioMaior*raio*cos(angulo+incremento), raioMenor*raio*sin(angulo+incremento));
+        glVertex3f(raioMaior*raio*cos(angulo),raioMenor*raio*sin(angulo),0);
+        glVertex3d(raioMaior*raio*cos(angulo+incremento), raioMenor*raio*sin(angulo+incremento),0);
      }
      glEnd();
 
@@ -134,18 +135,22 @@ void DesenhaEstatico(float r,float g,float b, float raio){
      // Especifica que a cor RGB
      glColor3f(r, g, b);
 
-	 // Especifica o tamanho do ponto
-	 glPointSize(1.0f);
+	 
+    /*
+        // Especifica o tamanho do ponto
+        glPointSize(1.0f);
 
-     incremento = (2 * M_PI) / vertices;
+        incremento = (2 * M_PI) / vertices;
 
-    glBegin(GL_POLYGON);
-     for(angulo=0; angulo<2*M_PI; angulo+=incremento){
-        glVertex2f(raio*cos(angulo),raio*sin(angulo));
-        glVertex2d(raio*cos(angulo+incremento), raio*sin(angulo+incremento));
-     }
-    glEnd();
-
+        glBegin(GL_POLYGON);
+        for(angulo=0; angulo<2*M_PI; angulo+=incremento){
+            glVertex2f(raio*cos(angulo),raio*sin(angulo));
+            glVertex2d(raio*cos(angulo+incremento), raio*sin(angulo+incremento));
+        }
+        glEnd();
+    */
+    
+    glutSolidSphere(raio,slices,stacks);
 
 }
 
@@ -169,17 +174,21 @@ void DesenhaPlaneta(int planeta, float raioOrbita){
      glColor3f(r, g, b);
 
 	 // Especifica o tamanho do ponto
-	 glPointSize(2.0f);
+	/*
+        glPointSize(2.0f);
 
-     incremento = (2 * M_PI) / vertices;
+        incremento = (2 * M_PI) / vertices;
 
 
-    glBegin(GL_POLYGON);
-     for(angulo=0; angulo<2*M_PI; angulo+=incremento){
-        glVertex2f(raio*cos(angulo),raio*sin(angulo));
-        glVertex2d(raio*cos(angulo+incremento), raio*sin(angulo+incremento));
-     }
-    glEnd();
+        glBegin(GL_POLYGON);
+        for(angulo=0; angulo<2*M_PI; angulo+=incremento){
+            glVertex2f(raio*cos(angulo),raio*sin(angulo));
+            glVertex2d(raio*cos(angulo+incremento), raio*sin(angulo+incremento));
+        }
+        glEnd();
+    */
+
+    glutSolidSphere(raio,slices,stacks);
 
     for(int anel=1; anel<=qtdAnel; anel++){
         DesenhaOrbita(raio+anel*0.5);
@@ -243,8 +252,13 @@ void Desenha(void)
         if(show[planeta-1]) DesenhaPlaneta(planeta-1, 5*planeta);
         glPopMatrix();
 	}
-       
+
     glPopMatrix();
+
+      glColor3f(1,0,0);
+    glPointSize(10.0f);
+
+    glVertex3f(deslocamentoX+lookx,deslocamentoY+looky,looky/2);
 
 
 	// Executa os comandos OpenGL
@@ -269,9 +283,15 @@ void EspecificaParametrosVisualizacao(void)
 	// Inicializa sistema de coordenadas do modelo
 	glLoadIdentity();
 
+    printf("%d",lookx);
+
+  
+
+        
+
 	// Especifica posi��o do observador, do alvo e do vetor up
 	gluLookAt(deslocamentoX,deslocamentoY,deslocamentoZ,
-		0,0,0,
+		deslocamentoX+lookx,deslocamentoY+looky,looky/2,
 		0,1,0);
 }
 
@@ -296,22 +316,22 @@ void TeclasEspeciais(int key, int x, int y)
 	switch(key)
 	{
 		case GLUT_KEY_UP:		// desloca o volume de visualiza��o para cima
-								deslocamentoY -= 2;
-								break;
-		case GLUT_KEY_DOWN:		// desloca o volume de visualiza��o para baixo
 								deslocamentoY += 2;
 								break;
-		case GLUT_KEY_LEFT:		// desloca o volume de visualiza��o para o lado esquerdo
-								deslocamentoX += 2;
+		case GLUT_KEY_DOWN:		// desloca o volume de visualiza��o para baixo
+								deslocamentoY -= 2;
 								break;
-		case GLUT_KEY_RIGHT:	// desloca o volume de visualiza��o para o lado direito
+		case GLUT_KEY_LEFT:		// desloca o volume de visualiza��o para o lado esquerdo
 								deslocamentoX -= 2;
 								break;
+		case GLUT_KEY_RIGHT:	// desloca o volume de visualiza��o para o lado direito
+								deslocamentoX += 2;
+								break;
 		case GLUT_KEY_PAGE_UP:	// desloca o volume de visualiza��o para frente
-								deslocamentoZ -= 2;
+								deslocamentoZ += 2;
 								break;
 		case GLUT_KEY_PAGE_DOWN:// desloca o volume de visualiza��o para tr�s
-								deslocamentoZ += 2;
+								deslocamentoZ -= 2;
 		break;
 	}
 	EspecificaParametrosVisualizacao();
@@ -392,6 +412,24 @@ void Teclado (unsigned char key, int x, int y)
         }
 
     }
+    //a
+    if(key == 97){
+        lookx += 0.5;
+    }
+    //d
+    if(key == 100){
+        lookx -= 0.5;
+    }        
+    //w
+    if(key == 119){
+        looky += 2;
+    }
+    //s 
+    if(key == 115){
+        looky -= 2;
+    }
+    
+    EspecificaParametrosVisualizacao();
 
     glutPostRedisplay();
 }
