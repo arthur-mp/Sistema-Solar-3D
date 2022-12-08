@@ -221,12 +221,12 @@ void Desenha(void)
 
     desenhaTerreno();
 
-	// Altera a cor do desenho para preto
+	// Altera a cor do desenho para branco
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 
 	glPushMatrix();
-	glTranslated(0,40,0);
+	glTranslated(0,0,40);
 
 	//Sol
 	DesenhaEstatico(1, 1, 0, 3);
@@ -385,7 +385,7 @@ void Inicializa (void)
 	// Inicializa as vari�veis utilizadas para implementa��o
 	// da opera��o de pan
 	deslocamentoX = 0.0f;
-	deslocamentoY = 110.0f;
+	deslocamentoY = -80.0f;
 	deslocamentoZ = 150.0f;
 }
 
