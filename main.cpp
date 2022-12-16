@@ -221,8 +221,8 @@ void DesenhaPlaneta(int planeta, float raioOrbita)
 void DefineIluminacao()
 {
     // Luz 0
-    GLfloat luzAmbiente[4] = {0.05, 0.05, 0.05, 1.0};
-    GLfloat luzDifusa[4] = {0.5, 0.5, 0.5, 1.0};    // "cor"
+    GLfloat luzAmbiente[4] = {0.5, 0.5, 0.5, 1.0};
+    GLfloat luzDifusa[4] = {0.5 , 0.5, 0.5, 1.0};    // "cor"
     GLfloat luzEspecular[4] = {0.1, 0.1, 0.1, 1.0}; // "brilho"
     GLfloat posicaoLuz[4] = {0.0, 0.0, 45.0, 1.0};
     GLfloat posicaoLuz1[4] = {0.0, 0.0, 35.0, 1.0};
@@ -231,7 +231,7 @@ void DefineIluminacao()
     GLfloat posicaoLuz4[4] = {0.0, 5.0, 40.0, 1.0};
     GLfloat posicaoLuz5[4] = {0.0, -5.0, 40.0, 1.0};
     // Capacidade de brilho do material
-    GLfloat especularidade[4] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat especularidade[4] = {1, 1, 1, 1};
     GLint especMaterial = 60;
     // Define a reflet�ncia do material
     glMaterialfv(GL_FRONT, GL_SPECULAR, especularidade);
@@ -240,32 +240,32 @@ void DefineIluminacao()
     // Ativa o uso da luz ambiente
     glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
     // Define os par�metros da luz de n�mero 0
-    glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
-    glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT1, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT1, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT1, GL_POSITION, posicaoLuz1);
 
-    glLightfv(GL_LIGHT2, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT2, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT2, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT2, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT2, GL_POSITION, posicaoLuz2);
 
-    glLightfv(GL_LIGHT3, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT3, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT3, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT3, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT3, GL_POSITION, posicaoLuz3);
 
-    glLightfv(GL_LIGHT4, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT4, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT4, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT4, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT4, GL_POSITION, posicaoLuz4);
 
-    glLightfv(GL_LIGHT5, GL_AMBIENT, luzAmbiente);
+    //glLightfv(GL_LIGHT5, GL_AMBIENT, luzAmbiente);
     glLightfv(GL_LIGHT5, GL_DIFFUSE, luzDifusa);
     glLightfv(GL_LIGHT5, GL_SPECULAR, luzEspecular);
     glLightfv(GL_LIGHT5, GL_POSITION, posicaoLuz5);
@@ -279,11 +279,10 @@ void Desenha(void)
     // de fundo definida previamente
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glRotatef(lookx,0,0,0);
 
     DefineIluminacao();
 
-    desenhaTerreno();
+    //desenhaTerreno();
 
     // Altera a cor do desenho para branco
     glColor3f(1.0f, 1.0f, 1.0f);
@@ -349,7 +348,7 @@ void EspecificaParametrosVisualizacao(void)
     }
     // Especifica posi��o do observador, do alvo e do vetor up
     gluLookAt(deslocamentoX, deslocamentoY, deslocamentoZ,
-              deslocamentoX, deslocamentoY + cos(looky), deslocamentoZ + sin(looky),
+              deslocamentoX+lookx, deslocamentoY + cos(looky), deslocamentoZ + sin(looky),
               0, boop2, boop);
 }
 
